@@ -263,7 +263,7 @@ class MtfModel(T5Model):
                       steps, self._ensemble_inputs, dataset_split=split)
 
   def eval(self, mixture_or_task_name, checkpoint_steps=None, summary_dir=None,
-           split="validation", eval_with_score=False):
+           split="validation", eval_with_score=False, beam_size=1, temperature=1.0):
     """Evaluate the model on the given Mixture or Task.
 
     Args:
@@ -290,6 +290,9 @@ class MtfModel(T5Model):
     )
     with gin.unlock_config():
       gin.parse_config_file(_operative_config_path(self._model_dir))
+      gin.bind_parameter("Bitransformer.decode.beam_size", beam_size)
+      gin.bind_parameter("Bitransformer.decode.temperature", temperature)
+    
     estimator = self.estimator(
         vocabulary, score_in_predict_mode=eval_with_score)
     utils.eval_model(
