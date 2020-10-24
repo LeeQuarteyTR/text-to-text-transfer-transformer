@@ -292,6 +292,7 @@ class MtfModel(T5Model):
       gin.parse_config_file(_operative_config_path(self._model_dir))
       gin.bind_parameter("Bitransformer.decode.beam_size", beam_size)
       gin.bind_parameter("Bitransformer.decode.temperature", temperature)
+<<<<<<< HEAD
     
     estimator = self.estimator(
         vocabulary, score_in_predict_mode=eval_with_score)
@@ -301,6 +302,12 @@ class MtfModel(T5Model):
         dataset_split=split, model_dir=self._model_dir,
         eval_dataset_fn=dataset_fn, eval_summary_dir=summary_dir,
         eval_checkpoint_step=checkpoint_steps, eval_with_score=eval_with_score)
+=======
+
+    utils.eval_model(self.estimator(vocabulary), vocabulary,
+                     self._sequence_length, self.batch_size, split,
+                     self._model_dir, dataset_fn, summary_dir, checkpoint_steps)
+>>>>>>> 4d8d9ea348dea7f36d701d67db66d29cf9fa07dc
 
   def finetune(self, mixture_or_task_name, finetune_steps, pretrained_model_dir,
                pretrained_checkpoint_step=-1, split="train"):
